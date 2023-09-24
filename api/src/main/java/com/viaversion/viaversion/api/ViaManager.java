@@ -24,6 +24,7 @@ package com.viaversion.viaversion.api;
 
 import com.viaversion.viaversion.api.command.ViaVersionCommand;
 import com.viaversion.viaversion.api.connection.ConnectionManager;
+import com.viaversion.viaversion.api.data.shared.DataFillers;
 import com.viaversion.viaversion.api.debug.DebugHandler;
 import com.viaversion.viaversion.api.platform.ViaInjector;
 import com.viaversion.viaversion.api.platform.ViaPlatform;
@@ -83,6 +84,13 @@ public interface ViaManager {
      * @return platform loader
      */
     ViaPlatformLoader getLoader();
+
+    /**
+     * Returns data fillers for shared mapping data between protocols.
+     *
+     * @return mapping data fillers
+     */
+    DataFillers getDataFillers();
 
     /**
      * Returns the async task scheduler.

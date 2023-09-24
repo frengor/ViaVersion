@@ -18,9 +18,11 @@
 package com.viaversion.viaversion.protocols.protocol1_19_3to1_19_1;
 
 import com.google.gson.JsonElement;
+import com.viaversion.viaversion.api.Via;
 import com.viaversion.viaversion.api.connection.UserConnection;
 import com.viaversion.viaversion.api.data.MappingData;
 import com.viaversion.viaversion.api.data.MappingDataBase;
+import com.viaversion.viaversion.api.data.shared.DataFillers;
 import com.viaversion.viaversion.api.minecraft.PlayerMessageSignature;
 import com.viaversion.viaversion.api.minecraft.RegistryType;
 import com.viaversion.viaversion.api.minecraft.entities.Entity1_19_3Types;
@@ -32,6 +34,7 @@ import com.viaversion.viaversion.api.type.Type;
 import com.viaversion.viaversion.api.type.types.BitSetType;
 import com.viaversion.viaversion.api.type.types.ByteArrayType;
 import com.viaversion.viaversion.api.type.types.minecraft.ParticleType;
+import com.viaversion.viaversion.api.type.types.version.Types1_19;
 import com.viaversion.viaversion.api.type.types.version.Types1_19_3;
 import com.viaversion.viaversion.data.entity.EntityTrackerBase;
 import com.viaversion.viaversion.libs.kyori.adventure.text.Component;
@@ -280,9 +283,8 @@ public final class Protocol1_19_3To1_19_1 extends AbstractProtocol<ClientboundPa
     }
 
     @Override
-    protected void onMappingDataLoaded() {
-        super.onMappingDataLoaded();
-        Types1_19_3.PARTICLE.filler(this)
+    protected void registerDataInitializers(final DataFillers dataFillers) {
+        dataFillers.register(Types1_19_3.class, MAPPINGS, () -> Types1_19_3.PARTICLE.filler(MAPPINGS)
                 .reader("block", ParticleType.Readers.BLOCK)
                 .reader("block_marker", ParticleType.Readers.BLOCK)
                 .reader("dust", ParticleType.Readers.DUST)
@@ -291,8 +293,24 @@ public final class Protocol1_19_3To1_19_1 extends AbstractProtocol<ClientboundPa
                 .reader("item", ParticleType.Readers.VAR_INT_ITEM)
                 .reader("vibration", ParticleType.Readers.VIBRATION1_19)
                 .reader("sculk_charge", ParticleType.Readers.SCULK_CHARGE)
-                .reader("shriek", ParticleType.Readers.SHRIEK);
-        Entity1_19_3Types.initialize(this);
+                .reader("shriek", ParticleType.Readers.SHRIEK));
+        dataFillers.register(Entity1_19_3Types.class, MAPPINGS, () -> Entity1_19_3Types.initialize(MAPPINGS));
+    }
+
+    @Override
+    protected void registerIntents(final DataFillers dataFillers) {
+        dataFillers.registerIntent(Types1_19.class);
+        dataFillers.registerIntent(Types1_19_3.class);
+        dataFillers.registerIntent(Entity1_19_3Types.class);
+    }
+
+    @Override
+    protected void onMappingDataLoaded() {
+        super.onMappingDataLoaded();
+
+        final DataFillers dataFillers = Via.getManager().getDataFillers();
+        dataFillers.initialize(Entity1_19_3Types.class);
+        dataFillers.initialize(Types1_19_3.class);
     }
 
     @Override
