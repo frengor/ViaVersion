@@ -449,7 +449,9 @@ public class ProtocolManagerImpl implements ProtocolManager {
 
     @Override
     public void completeMappingDataLoading(Class<? extends Protocol> protocolClass) throws Exception {
-        if (mappingsLoaded) return;
+        if (mappingsLoaded) {
+            return;
+        }
 
         CompletableFuture<Void> future = getMappingLoaderFuture(protocolClass);
         if (future != null) {
@@ -537,8 +539,9 @@ public class ProtocolManagerImpl implements ProtocolManager {
         mappingLoaderFutures.clear();
         mappingLoaderFutures = null;
 
-        // Clear cached mapping files
+        // Clear cached mapping files and data initializers
         MappingDataLoader.clearCache();
+        Via.getManager().getDataFillers().clear();
     }
 
     private Function<Throwable, Void> mappingLoaderThrowable(Class<? extends Protocol> protocolClass) {

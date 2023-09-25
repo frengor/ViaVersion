@@ -147,8 +147,8 @@ public class ProtocolVersion implements Comparable<ProtocolVersion> {
      * @param version protocol version
      * @return registered or unknown {@link ProtocolVersion}
      */
-    public static @NonNull ProtocolVersion getProtocol(int version) {
-        ProtocolVersion protocolVersion = VERSIONS.get(version);
+    public static @NonNull ProtocolVersion getProtocol(final int version) {
+        final ProtocolVersion protocolVersion = VERSIONS.get(version);
         if (protocolVersion != null) {
             return protocolVersion;
         } else {
@@ -161,7 +161,9 @@ public class ProtocolVersion implements Comparable<ProtocolVersion> {
      *
      * @param version protocol version instance
      * @return internal index of the stored protocol version
+     * @deprecated comparison should be done via the comparison methods
      */
+    @Deprecated/*(forRemoval = true)*/
     public static int getIndex(ProtocolVersion version) {
         return VERSION_LIST.indexOf(version);
     }
@@ -377,6 +379,16 @@ public class ProtocolVersion implements Comparable<ProtocolVersion> {
     }
 
     /**
+     * Returns whether this protocol version is higher than or equal to the other protocol version.
+     *
+     * @param other other protocol version
+     * @return true if this protocol version is higher than or equal to the other protocol version
+     */
+    public boolean higherThanOrEquals(final ProtocolVersion other) {
+        return this.compareTo(other) >= 0;
+    }
+
+    /**
      * Returns whether this protocol version is lower than the other protocol version.
      *
      * @param other other protocol version
@@ -384,6 +396,16 @@ public class ProtocolVersion implements Comparable<ProtocolVersion> {
      */
     public boolean lowerThan(final ProtocolVersion other) {
         return this.compareTo(other) < 0;
+    }
+
+    /**
+     * Returns whether this protocol version is lower than or equal to the other protocol version.
+     *
+     * @param other other protocol version
+     * @return true if this protocol version is lower than or equal to the other protocol version
+     */
+    public boolean lowerThanOrEquals(final ProtocolVersion other) {
+        return this.compareTo(other) <= 0;
     }
 
     @Override
@@ -412,8 +434,14 @@ public class ProtocolVersion implements Comparable<ProtocolVersion> {
     public int compareTo(final ProtocolVersion other) {
         if (this.versionType != other.versionType) {
             // Compare by version type first since version ids have reset multiple times
-            return Integer.compare(this.versionType.ordinal(), other.versionType.ordinal());
+            return this.versionType.ordinal() < other.versionType.ordinal() ? -1 : 1;
         }
-        return Integer.compare(this.version, other.version);
+
+        // Compare by release version, then by snapshot version
+        if (this.version != other.version) {
+            return this.version < other.version ? -1 : 1;
+        }
+
+        return Integer.compare(this.snapshotVersion, other.snapshotVersion);
     }
 }

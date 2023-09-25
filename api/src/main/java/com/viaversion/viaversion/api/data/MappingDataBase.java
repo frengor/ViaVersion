@@ -65,9 +65,7 @@ public class MappingDataBase implements MappingData {
     @Override
     public void load() {
         Preconditions.checkArgument(!loaded, "Mapping data already loaded");
-        if (Via.getManager().isDebug()) {
-            getLogger().info("Loading " + unmappedVersion + " -> " + mappedVersion + " mappings...");
-        }
+        getLogger().info("Loading " + unmappedVersion + " -> " + mappedVersion + " mappings...");
 
         final CompoundTag data = readNBTFile("mappings-" + unmappedVersion + "to" + mappedVersion + ".nbt");
         blockMappings = loadMappings(data, "blocks");

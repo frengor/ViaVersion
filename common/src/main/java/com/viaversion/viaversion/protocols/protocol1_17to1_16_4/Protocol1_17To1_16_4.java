@@ -190,7 +190,7 @@ public final class Protocol1_17To1_16_4 extends AbstractProtocol<ClientboundPack
 
     @Override
     protected void registerDataInitializers(final DataFillers dataFillers) {
-        dataFillers.register(Types1_17.class, MAPPINGS, () -> Types1_17.PARTICLE.filler(MAPPINGS)
+        dataFillers.register(Types1_17.class, this, () -> Types1_17.PARTICLE.filler(MAPPINGS)
                 .reader("block", ParticleType.Readers.BLOCK)
                 .reader("dust", ParticleType.Readers.DUST)
                 .reader("falling_dust", ParticleType.Readers.BLOCK)

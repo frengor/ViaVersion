@@ -22,8 +22,8 @@
  */
 package com.viaversion.viaversion.api.data.shared;
 
-import com.viaversion.viaversion.api.data.MappingData;
 import com.viaversion.viaversion.api.protocol.AbstractProtocol;
+import com.viaversion.viaversion.api.protocol.Protocol;
 
 /**
  * This class is used to register data that is shared between multiple protocols.
@@ -42,10 +42,10 @@ public interface DataFillers {
      * Register a type to be filled with the given mapping data.
      *
      * @param type        type of the object to register
-     * @param mappingData mapping data required
+     * @param protocol    protocol of which the mapping data is required
      * @param initializer initializer to run when the type is registered
      */
-    void register(Class<?> type, MappingData mappingData, Runnable initializer);
+    void register(Class<?> type, Protocol<?, ?, ?, ?> protocol, Runnable initializer);
 
     /**
      * Registers an intent to use the data from the given type, making sure it is loaded.
@@ -67,4 +67,9 @@ public interface DataFillers {
      * @throws IllegalStateException if no initializer was found for a required type
      */
     void initializeRequired();
+
+    /**
+     * Clears stored data, to be called once all mapping data loading has been completed.
+     */
+    void clear();
 }

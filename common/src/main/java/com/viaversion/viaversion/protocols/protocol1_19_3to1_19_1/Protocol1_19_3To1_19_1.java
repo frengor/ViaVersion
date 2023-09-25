@@ -284,7 +284,7 @@ public final class Protocol1_19_3To1_19_1 extends AbstractProtocol<ClientboundPa
 
     @Override
     protected void registerDataInitializers(final DataFillers dataFillers) {
-        dataFillers.register(Types1_19_3.class, MAPPINGS, () -> Types1_19_3.PARTICLE.filler(MAPPINGS)
+        dataFillers.register(Types1_19_3.class, this, () -> Types1_19_3.PARTICLE.filler(MAPPINGS)
                 .reader("block", ParticleType.Readers.BLOCK)
                 .reader("block_marker", ParticleType.Readers.BLOCK)
                 .reader("dust", ParticleType.Readers.DUST)
@@ -294,7 +294,7 @@ public final class Protocol1_19_3To1_19_1 extends AbstractProtocol<ClientboundPa
                 .reader("vibration", ParticleType.Readers.VIBRATION1_19)
                 .reader("sculk_charge", ParticleType.Readers.SCULK_CHARGE)
                 .reader("shriek", ParticleType.Readers.SHRIEK));
-        dataFillers.register(Entity1_19_3Types.class, MAPPINGS, () -> Entity1_19_3Types.initialize(MAPPINGS));
+        dataFillers.register(Entity1_19_3Types.class, this, () -> Entity1_19_3Types.initialize(MAPPINGS));
     }
 
     @Override

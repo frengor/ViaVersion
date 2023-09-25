@@ -73,6 +73,9 @@ public class BaseProtocol extends AbstractProtocol {
                     Via.getManager().getProtocolManager().completeMappingDataLoading(entry.protocol().getClass());
                 }
 
+                // Complete data fillers initialization if required
+                Via.getManager().getProtocolManager().completeMappingDataLoading(BaseProtocol.class);
+
                 // Add protocols to pipeline
                 pipeline.add(protocols);
 

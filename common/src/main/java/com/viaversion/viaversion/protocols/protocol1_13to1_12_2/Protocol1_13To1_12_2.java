@@ -846,7 +846,7 @@ public class Protocol1_13To1_12_2 extends AbstractProtocol<ClientboundPackets1_1
 
     @Override
     protected void registerDataInitializers(final DataFillers dataFillers) {
-        dataFillers.register(Types1_13.class, MAPPINGS, () -> Types1_13.PARTICLE.filler(MAPPINGS)
+        dataFillers.register(Types1_13.class, this, () -> Types1_13.PARTICLE.filler(MAPPINGS)
                 .reader(3, ParticleType.Readers.BLOCK)
                 .reader(20, ParticleType.Readers.DUST)
                 .reader(11, ParticleType.Readers.DUST)
